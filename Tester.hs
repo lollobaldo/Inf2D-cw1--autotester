@@ -239,6 +239,6 @@ main = do
   putStrLn summary
   lambda <- readFile $ if os == "mingw32" then "lambda.txt" else "lambdaC.txt"
   wrong <- readFile "wrong.txt"
-  when meme $ if summary == passTest
+  when meme $ if errors == []
     then putStrLn lambda
     else putStrLn wrong
