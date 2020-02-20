@@ -12,11 +12,12 @@ git clone https://github.com/lollobaldo/Inf2D-cw1--autotester.git
 
 ## Usage
 
-Just `cd` into the repository and run the `runTests` command:
+Just `cd` into the repository and run the `runTests` command (remember to give executable permission on Linux):
 
 ### Linux/DICE
 ```bash
 cd Inf2D-cw1--autotester
+chmod +x runTests.sh
 ./runTests
 ```
 ---
