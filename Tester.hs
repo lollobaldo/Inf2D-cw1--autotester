@@ -237,7 +237,7 @@ main = do
         [] -> passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""
         _ -> inclusiveIntercalate ("\n" ++ replicate 50 '─' ++ "\n") errors
   putStrLn summary
-  lambda <- readFile "lambda.txt"
+  lambda <- readFile $ if os == "mingw32" then "lambda.txt" else "lambdaC.txt"
   wrong <- readFile "wrong.txt"
   when meme $ if summary == passTest
     then putStrLn lambda
