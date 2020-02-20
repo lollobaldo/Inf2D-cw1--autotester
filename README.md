@@ -28,6 +28,8 @@ runTests.bat
 **Note:** needs Git bash to run on Windows, VSCode terminal not supported.
 
 
+## Bugs
+Pass it a `--no-meme` flag if you don't like to see LambdaMan :cry:
 
 ## Bugs
 Shoot me a text on Facebook if there's anything wrong.
