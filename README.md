@@ -19,13 +19,15 @@ Just `cd` into the repository and run the `runTests` command:
 cd Inf2D-cw1--autotester
 ./runTests
 ```
-
+---
 ### Windows
 ```batch
 cd Inf2D-cw1--autotester
 runTests.bat
 ```
-***Note:*** needs Git bash to run
+**Note:** needs Git bash to run on Windows, VSCode terminal not supported.
+
+
 
 ## Bugs
 Shoot me a text on Facebook if there's anything wrong.
