@@ -164,7 +164,10 @@ testCostGraph2 = TestCost hugeGraph [0,1,5] 4
 testGetHRSimple0 = TestGetHR [0] 0 0
 testGetHRSimple1 = TestGetHR [1,2] 1 2
 
-testEvalEmpty = TestEval [] (-1)
+testEvalHuman = TestEval [1,1,1,1,0,1,1,0,1,0,0,1,1,1,0,0] 1
+testEvalComp = TestEval [1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,1] (-1)
+testEvalDraw = TestEval [1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1] 0
+
 
 testsListNext :: [TestNext]
 testsListNext = [
@@ -206,7 +209,7 @@ testsListGetHR = [
   testGetHRSimple1]
 
 testsListEval :: [TestEval]
-testsListEval = [testEvalEmpty]
+testsListEval = [testEvalHuman, testEvalComp, testEvalDraw]
 
 testsListSearch :: [TestSearch]
 testsListSearch = [
