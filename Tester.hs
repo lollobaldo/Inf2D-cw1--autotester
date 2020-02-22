@@ -1,17 +1,21 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Tester where
 
 import Data.List
+import Data.Maybe
 import Control.Monad
 import System.Info
 import System.Environment
 import Control.Exception
 import System.IO.Unsafe
+import System.Timeout
 
 
 import Tests
 import ConnectFourWithTwist
 
-import Inf2d1
+import Inf2d1 hiding (main)
 
 
 type Matrix = [[Int]]
@@ -24,8 +28,11 @@ data Result = Passed | TestError {
 }
 
 instance Show Result where
+  show (TestError _ _ _ "TIMEOUT") = "∞"
+  show (TestError _ _ _ "UNDEFINED") = "?"
+  show (TestError _ _ _ "ERROR") = "е"
   show Passed = if os == "mingw32" then "√" else "✔"
-  show _ = if os == "mingw32" then "X" else "✗"
+  show _ = if os == "mingw32" then "Х" else "✗"
 
 
 data Function =
@@ -125,14 +132,34 @@ descriptivePrintResult (TestError f t e a) =
 getResult :: (Eq a, Show a) => Function -> String -> a -> a -> Result
 getResult f s expected output = unsafePerformIO result
   where
+    -- handleError :: Exception e => e -> IO Result
+    -- handleError (ErrorCall e) = return $ TestError f s (show expected) "UNDEFINED"
+    -- handleError (SomeException e) = return $ TestError f s (show expected) "ERROR"
+    -- handleSuccess :: Maybe Bool -> IO Result
+    -- handleSuccess = return doIt
+    --   where
+    --     doIt Nothing = TestError f s (show expected) "TIMEOUT"
+    --     doIt (Just False) = TestError f s (show expected) (show output)
+    --     doIt (Just True) = Passed
+    analyse :: Bool -> Result
+    analyse True = Passed
+    analyse False = TestError f s (show expected) (show output)
+    handleError :: IO Result -> IO Result
+    handleError =
+      (flip catches)
+        [Handler (\ (e :: ErrorCall) -> return $ TestError f s (show expected) "UNDEFINED")]--,
+        --  Handler (\ (e :: SomeException) -> return $ TestError f s (show expected) "ERROR")]
+    execute :: IO (Maybe Result)
+    execute = do
+      args <- getArgs
+      let noTimeout = "--no-timeout" `elem` args
+      let timer = if noTimeout then -1 else 5000000
+      let res = handleError . evaluate . analyse $ (output == expected)
+      timeout timer . handleError . evaluate . analyse $ (output == expected)
     result = do
-      result <- try (evaluate (output == expected)) :: IO (Either ErrorCall Bool)
-      case result of
-        Left ex -> pure $ TestError f s (show expected) "UNDEFINED"
-        Right bool -> pure $ if bool
-          then Passed
-          else TestError f s (show expected) (show output)
-
+      let timeoutError = TestError f s (show expected) "TIMEOUT"
+      res <- execute
+      return $ fromMaybe timeoutError res
 
 testerNext :: TestNext -> Result
 testerNext (TestNext branch graph out) = analyse . prettify $ next inp1 inp2
@@ -219,10 +246,8 @@ runTestsSearches = map (`testAll` testsListSearch) funcList
 main = do
   putStrLn "AAARAINBOWAAA"
   args <- getArgs
-  let (user, meme) = case args of
-        [] -> ("", False)
-        (x:"--no-meme":_) -> (x, False)
-        (x:_) -> (x, True)
+  let user = if null args then "" else head args
+  let meme = "--no-meme" `elem` args
   putStrLn "Testing functions:"
   let testResultsTable = map (map show) runTestsFunctions
   let labels = zipWith (:) ["Next","CheckArrival", "Explored", "Cost", "GetHR", "Eval"] testResultsTable
