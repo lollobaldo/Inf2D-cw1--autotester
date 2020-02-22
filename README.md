@@ -31,7 +31,7 @@ runTests.bat
 ## --no-timeout
 The Tester currently stops a function if it does not return any value after 5 seconds. Pass it a `--no-timeout` flag if you want to run it indefinitely.
 
-❗️ :heavy_exclamation_mark:**NOTE:** this may result in a stack/heap overflow error
+:heavy_exclamation_mark:**NOTE:** this may result in a stack/heap overflow error
 
 ## --no-meme
 Pass it a `--no-meme` flag if you don't like to see LambdaMan :cry:
