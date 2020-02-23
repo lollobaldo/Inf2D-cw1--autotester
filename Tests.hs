@@ -6,55 +6,55 @@ import Inf2d1
 type Matrix = [[Int]]
 
 data GraphObj = GraphObj {
-  label :: String,
-  adjMtx :: Matrix,
-  hrTable :: [Int]
+  label :: !String,
+  adjMtx :: !Matrix,
+  hrTable :: ![Int]
 }
 
 data TestSearch = TestSearch {
-  description :: String,
-  graphObj :: GraphObj,
-  startNode :: Node,
-  endNode :: Node,
-  testDepth :: Int,
-  bfs :: Branch,
-  dfs :: Branch,
-  ass :: Branch
+  description :: !String,
+  graphObj :: !GraphObj,
+  startNode :: !Node,
+  endNode :: !Node,
+  testDepth :: !Int,
+  bfs :: !Branch,
+  dfs :: !Branch,
+  ass :: !Branch
 }
 
 data TestNext = TestNext {
-  inpBranch_next :: Branch,
-  inpGraph_next :: GraphObj,
-  outBranches_next :: [Branch]
+  inpBranch_next :: !Branch,
+  inpGraph_next :: !GraphObj,
+  outBranches_next :: ![Branch]
 }
 
 data TestCheckArrival = TestCheckArrival {
-  inpNode1_checkArrival :: Node,
-  inpNode2_checkArrival :: Node,
-  outBool_checkArrival :: Bool
+  inpNode1_checkArrival :: !Node,
+  inpNode2_checkArrival :: !Node,
+  outBool_checkArrival :: !Bool
 }
 
 data TestExplored = TestExplored {
-  inpNode_explored :: Node,
-  inpNodes_explored :: [Node],
-  outBool_explored :: Bool
+  inpNode_explored :: !Node,
+  inpNodes_explored :: ![Node],
+  outBool_explored :: !Bool
 }
 
 data TestCost = TestCost {
-  inpGraph_cost :: GraphObj,
-  inpBranch_cost :: Branch,
-  outInt_cost :: Int
+  inpGraph_cost :: !GraphObj,
+  inpBranch_cost :: !Branch,
+  outInt_cost :: !Int
 }
 
 data TestGetHR = TestGetHR {
-  inpHRTable_getHR :: [Int],
-  inpNode_getHR :: Node,
-  outInt_getHR :: Int
+  inpHRTable_getHR :: ![Int],
+  inpNode_getHR :: !Node,
+  outInt_getHR :: !Int
 }
 
 data TestEval = TestEval {
-  inpGame_eval :: Game,
-  outInt_eval :: Int
+  inpGame_eval :: !Game,
+  outInt_eval :: !Int
 }
 
 

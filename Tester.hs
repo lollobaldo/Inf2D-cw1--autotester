@@ -1,6 +1,18 @@
-{-# LANGUAGE ScopedTypeVariables #-}
+-- {-# OPTIONS -Weverything #-}
+-- {-# OPTIONS -W-no-unsafe #-}
+{-# OPTIONS -Wall #-}
+{-# OPTIONS -Wincomplete-uni-patterns #-}
+{-# OPTIONS -Wincomplete-record-updates #-}
+{-# OPTIONS -Wcompat #-}
+{-# OPTIONS -Widentities #-}
+{-# OPTIONS -Wredundant-constraints #-}
+{-# OPTIONS -Wmissing-export-lists #-}
+{-# OPTIONS -Wpartial-fields #-}
+{-# OPTIONS -funbox-strict-fields #-}
 
-module Tester where
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE BangPatterns #-}
+module Tester (main) where
 
 import Data.List
 import Data.Maybe
@@ -13,18 +25,16 @@ import System.Timeout
 
 
 import Tests
-import ConnectFourWithTwist
+-- import ConnectFourWithTwist
 
 import Inf2d1 hiding (main)
 
 
-type Matrix = [[Int]]
-
 data Result = Passed | TestError {
-  testFunction :: Function,
-  testText :: String,
-  expectedOutput :: String,
-  actualOutput :: String
+  _testFunction :: !Function,
+  _testText :: !String,
+  _expectedOutput :: !String,
+  _actualOutput :: !String
 }
 
 instance Show Result where
@@ -47,7 +57,9 @@ data Function =
   ASS |
   ABS deriving (Show)
 
+inputError :: a
 inputError = error "ERROR: wrong input type"
+
 class Test t where
   test :: Function -> t -> Result
 
@@ -109,17 +121,17 @@ wrapSolution :: Branch -> Maybe Branch
 wrapSolution [] = Nothing
 wrapSolution b = Just b
 
-prettyPrintMaybeBranch :: Maybe Branch -> String
-prettyPrintMaybeBranch = maybe "Nothing" prettyPrintBranch
+-- prettyPrintMaybeBranch :: Maybe Branch -> String
+-- prettyPrintMaybeBranch = maybe "Nothing" prettyPrintBranch
 
-prettyPrintBranch :: Branch -> String
-prettyPrintBranch = ("\t" ++) . intercalate " -> " . map show . reverse
+-- prettyPrintBranch :: Branch -> String
+-- prettyPrintBranch = ("\t" ++) . intercalate " -> " . map show . reverse
 
-prettyPrintBranchList :: [Branch] -> String
-prettyPrintBranchList = unlines . map prettyPrintBranch
+-- prettyPrintBranchList :: [Branch] -> String
+-- prettyPrintBranchList = unlines . map prettyPrintBranch
 
-prettyPrintResults :: [[Result]] -> String
-prettyPrintResults = tabularise . map (map show)
+-- prettyPrintResults :: [[Result]] -> String
+-- prettyPrintResults = tabularise . map (map show)
 
 descriptivePrintResult :: Result -> String
 descriptivePrintResult Passed = ""
@@ -147,14 +159,13 @@ getResult f s expected output = unsafePerformIO result
     handleError :: IO Result -> IO Result
     handleError =
       (flip catches)
-        [Handler (\ (e :: ErrorCall) -> return $ TestError f s (show expected) "UNDEFINED")]--,
-        --  Handler (\ (e :: SomeException) -> return $ TestError f s (show expected) "ERROR")]
+        [Handler (\(_ :: ErrorCall) -> return $ TestError f s (show expected) "UNDEFINED")]--,
+        --  Handler (\(_ :: SomeException) -> return $ TestError f s (show expected) "ERROR")]
     execute :: IO (Maybe Result)
     execute = do
       args <- getArgs
       let noTimeout = "--no-timeout" `elem` args
       let timer = if noTimeout then -1 else 5000000
-      let res = handleError . evaluate . analyse $ (output == expected)
       timeout timer . handleError . evaluate . analyse $ (output == expected)
     result = do
       let timeoutError = TestError f s (show expected) "TIMEOUT"
@@ -204,7 +215,7 @@ testerEval (TestEval inp1 out) = analyse $ eval inp1
     analyse = getResult Eval "testEval" out
 
 testerSearch :: Function -> TestSearch -> Result
-testerSearch f test = analyse . prettify $ case f of
+testerSearch f testObj = analyse . prettify $ case f of
     BFS -> breadthFirstSearch graph end next [[start]] []
     DFS -> depthLimitedSearch graph end next [[start]] depthLimit []
     ASS -> aStarSearch graph end next getHr heuristicTable cost [[start]] []
@@ -213,17 +224,18 @@ testerSearch f test = analyse . prettify $ case f of
     prettify :: Maybe Branch -> Maybe Branch
     prettify = fmap reverse
     analyse :: Maybe Branch -> Result
-    analyse = getResult f (description test) solution
-    graph = concat . adjMtx . graphObj $ test
-    start = startNode test
-    end = endNode test
-    solution = wrapSolution . getSolution $ test
+    analyse = getResult f (description testObj) solution
+    graph = concat . adjMtx . graphObj $ testObj
+    start = startNode testObj
+    end = endNode testObj
+    solution = wrapSolution . getSolution $ testObj
     getSolution = case f of
       BFS -> bfs
       DFS -> dfs
       ASS -> ass
-    depthLimit = testDepth test
-    heuristicTable = hrTable . graphObj $ test
+      _   -> inputError
+    depthLimit = testDepth testObj
+    heuristicTable = hrTable . graphObj $ testObj
 
 testAll :: Test t => Function -> [t] -> [Result]
 testAll = map . test
@@ -238,20 +250,22 @@ runTestsFunctions = [rn, rca, re, rc ,rghr, rev]
     rghr = testAll GetHR testsListGetHR
     rev = testAll Eval testsListEval
 
+funcList :: [Function]
 funcList = [BFS, DFS, ASS]
 runTestsSearches :: [[Result]]
 runTestsSearches = map (`testAll` testsListSearch) funcList
 
 
+main :: IO ()
 main = do
   putStrLn "AAARAINBOWAAA"
   args <- getArgs
-  let user = if null args then "" else head args
+  -- let user = if null args then "" else head args
   let meme = "--no-meme" `elem` args
   putStrLn "Testing functions:"
-  let testResultsTable = map (map show) runTestsFunctions
-  let labels = zipWith (:) ["Next","CheckArrival", "Explored", "Cost", "GetHR", "Eval"] testResultsTable
-  putStrLn . tabularise $ labels
+  let testResultsTableFunc = map (map show) runTestsFunctions
+  let labelsFunc = zipWith (:) ["Next","CheckArrival", "Explored", "Cost", "GetHR", "Eval"] testResultsTableFunc
+  putStrLn . tabularise $ labelsFunc
   putStrLn "Testing searches:"
   let testResultsTable = map (map show) runTestsSearches
   let labels = zipWith (:) ["Breath-first search","Depth-first search","A* search"] testResultsTable
