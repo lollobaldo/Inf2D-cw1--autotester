@@ -1,0 +1,2 @@
+-- Add automatic import for parent directory
+:set -i./:../
