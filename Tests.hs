@@ -182,6 +182,11 @@ testAlphaBetaDraw0 = TestAlphaBeta "Normal game (draw) (2 moves left)"
     1, 0, 0, 1,
     0, 1, 0, 0] humanPlayer 0
 
+testAlphaBetaDraw1 = TestAlphaBeta "Normal game (draw) (2 moves left)"
+  [-1,-1,-1,-1,
+   -1,-1,-1,-1,
+    1, 1, 0, 1,
+    0, 1, 0, 0] humanPlayer 0
 
 
 testNextEmpty = TestNext [] emptyGraph []
@@ -298,5 +303,6 @@ testsListAlphaBeta =
   , testAlphaBetaForcedDraw
   , testAlphaBetaForcedLoss
   , testAlphaBetaDraw0
+  -- , testAlphaBetaDraw1
   ]
 

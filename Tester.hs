@@ -273,7 +273,7 @@ main = do
   -- putStrLn "AAARAINBOWAAA"
   args <- getArgs
   -- let user = if null args then "" else head args
-  let meme = "--no-meme" `elem` args
+  let meme = "--no-meme" `notElem` args
   putStrLn "Testing functions:"
   let testResultsTableFunc = map (map show) runTestsFunctions
   let labelsFunc = zipWith (:) ["Next","CheckArrival", "Explored", "Cost", "GetHR", "Eval"] testResultsTableFunc
