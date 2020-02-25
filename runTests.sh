@@ -1,13 +1,13 @@
 #!/bin/sh
 
-GREEN=`echo -e '\033[92m'`
-DARK_GREEN=`echo -e '\033[1;32m'`
-RED=`echo -e '\033[1;31m'`
-CYAN=`echo -e '\033[96m'`
-BLUE=`echo -e '\033[94m'`
-YELLOW=`echo -e '\033[1;33m'`
-PURPLE=`echo -e '\033[95m'`
-RESET=`echo -e '\033[0m'`
+GREEN=`echo -e "\033[92m"`
+DARK_GREEN=`echo -e "\033[1;32m"`
+RED=`echo -e "\033[1;31m"`
+CYAN=`echo -e "\033[96m"`
+BLUE=`echo -e "\033[94m"`
+YELLOW=`echo -e "\033[1;33m"`
+PURPLE=`echo -e "\033[95m"`
+RESET=`echo -e "\033[0m"`
 
 test_passed="s/✔\|√/${DARK_GREEN}&${RESET}/g;"
 test_failed="s/✗\|Х/${RED}&${RESET}/g;"
