@@ -2,6 +2,11 @@
 
 Autotester for Inf2D - coursework 1: graph search
 
+## Notes
+The tester assumes you do not make use of the numNodes variable (tbf, there are no variables in Haskell). It does not make sense to use it, and I think this means they'll only test the `next` function with 4x4 graphs.
+
+Anyways, I do not because edge cases are important, so if you use `numNodes`, you should replace it with `(ceiling . sqrt . fromIntegral . length $ graph)` wherever you use it (assuming your graph is called `graph` and is in scope).
+
 ## Installation
 
 Just git clone where your coursework files are:
