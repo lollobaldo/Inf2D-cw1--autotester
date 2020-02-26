@@ -21,13 +21,19 @@ import Data.List
 import Data.Maybe
 import Control.Monad
 import System.Info
+import Data.List.Split
 import System.Environment
 import Control.Exception
 import System.IO.Unsafe
 import System.Timeout
+-- import Text.Printf
+-- import System.CPUTime
+
+
 
 
 import Tests
+import Autotests
 -- import ConnectFourWithTwist
 
 import Inf2d1 hiding (main)
@@ -115,6 +121,15 @@ tabRow xs ss = "│ " ++ intercalate " │ " [padToLength l s | (l,s) <- zip xs 
 
 pad :: Int -> [[String]] -> [[String]]
 pad i = map (\ss -> take i $ ss ++ repeat "")
+
+squarize :: [a] -> [[a]]
+squarize ls = chunksOf (i 15) ls
+  where
+    n = length ls
+    i 10 = 10
+    i j
+      | n `mod` j == 0 = j
+      | otherwise = i (j-1)
 
 tabularise :: [[String]] -> String
 tabularise a = unlines . ([topRow xs] ++) . (++ [botRow xs]) . intersperse (midRow xs) . map (tabRow xs) $ padded
@@ -268,28 +283,51 @@ runTestsSearches :: [[Result]]
 runTestsSearches = map (`testAll` testsListSearch) funcList
                    ++ [testAll AB testsListAlphaBeta]
 
-main :: IO ()
-main = do
-  -- putStrLn "AAARAINBOWAAA"
-  args <- getArgs
-  -- let user = if null args then "" else head args
-  let meme = "--no-meme" `notElem` args
+runTestsAuto :: [Result]
+runTestsAuto = concatMap (`testAll` testsListAuto) funcList
+
+mainTestFuncs :: IO ()
+mainTestFuncs = do
   putStrLn "Testing functions:"
   let testResultsTableFunc = map (map show) runTestsFunctions
   let labelsFunc = zipWith (:) ["Next","CheckArrival", "Explored", "Cost", "GetHR", "Eval"] testResultsTableFunc
   putStrLn . tabularise $ labelsFunc
+
+mainTestSearches :: IO ()
+mainTestSearches = do
   putStrLn "Testing searches:"
   let testResultsTable = map (map show) runTestsSearches
   let labels = zipWith (:) ["Breath-first search","Depth-first search","A* search", "Alpha-Beta"] testResultsTable
   putStrLn . tabularise $ labels
+
+mainTestAuto :: IO ()
+mainTestAuto = do
+  putStrLn "Autotests:"
+  let testResultsTable = squarize $ map show runTestsAuto
+  -- let labels = zipWith (:) ["10×10","20×20","30×30"] testResultsTable
+  putStrLn . tabularise $ testResultsTable
+
+main :: IO ()
+main = do
+  args <- getArgs
+  -- let user = if null args then "" else head args
+  let meme = "--no-meme" `notElem` args
+
+  mainTestFuncs
+  mainTestSearches
+
   let errors = [descriptivePrintResult e | e@TestError{} <- concat (runTestsFunctions ++ runTestsSearches)]
+  let autoErrors = [descriptivePrintResult e | e@TestError{} <- runTestsAuto]
+  when (null errors) mainTestAuto
+  
+  let totErrors = if null errors then errors else autoErrors
   let passTest = "All tests passed"
-  let summary = case errors of
+  let summary = case totErrors of
         [] -> passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""
-        _ -> inclusiveIntercalate ("\n" ++ replicate 50 '─' ++ "\n") errors
+        _ -> inclusiveIntercalate ("\n" ++ replicate 50 '─' ++ "\n") totErrors
   putStrLn summary
   lambda <- readFile $ if os == "mingw32" then "lambda.txt" else "lambdaC.txt"
   wrong <- readFile "wrong.txt"
-  when meme $ if null errors
+  when meme $ if null totErrors
     then putStrLn lambda
     else putStrLn wrong

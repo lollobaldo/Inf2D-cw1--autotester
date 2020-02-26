@@ -2,3 +2,4 @@
 *.hi
 dist-newstile/
 try.hs
+Generator.hs
