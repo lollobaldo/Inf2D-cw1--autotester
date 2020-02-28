@@ -326,8 +326,10 @@ main = do
   let errors = [descriptivePrintResult e | e@TestError{} <- concat (runTestsFunctions ++ runTestsSearches)]
   let autoErrors = [descriptivePrintResult e | e@TestError{} <- runTestsAuto]
   when (null errors) mainTestAuto
-  
-  let totErrors = if null errors then errors else autoErrors
+
+  let totErrors = case errors of
+        [] -> autoErrors
+        _  -> errors
   let passTest = "All tests passed"
   let summary = case totErrors of
         [] -> passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""

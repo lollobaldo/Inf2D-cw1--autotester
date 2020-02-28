@@ -19,7 +19,7 @@ remove_e="s/-е //g;"
 
 if [[ $* == *--windows* ]]
 then
-  echo "working"
+  # echo "working"
   exec runhaskell -i../:./ Tester.hs $(whoami) $2 |\
     sed "$test_passed\
       $test_failed\
