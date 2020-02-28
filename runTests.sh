@@ -15,9 +15,27 @@ test_timeout="s/∞/${YELLOW}&${RESET}/g;"
 test_undefined="s/?/${YELLOW}&${RESET}/g;"
 test_error="s/е/${RED}&${RESET}/g;"
 
-exec runhaskell -i../:./ Tester.hs $(whoami) $1 |\
+remove_e="s/-е //g;"
+
+if [[ $* == *--windows* ]]
+then
+  echo "working"
+  exec runhaskell -i../:./ Tester.hs $(whoami) $2 |\
     sed "$test_passed\
-         $test_failed\
-         $test_timeout\
-         $test_undefined\
-         $test_error"
+      $test_failed\
+      $test_timeout\
+      $test_undefined\
+      $test_error"
+fi
+
+if [[ $* != *--windows* ]]
+then
+  exec runhaskell -i../:./ Tester.hs $(whoami) $2 |\
+    sed "$remove_e\
+      $test_passed\
+      $test_failed\
+      $test_timeout\
+      $test_undefined\
+      $test_error\
+      $remove_e"
+fi
