@@ -21,12 +21,11 @@ import Data.List
 import Data.Maybe
 import Control.Monad
 import System.Info
-import Data.List.Split
+-- import Data.List.Split
 import System.Environment
 import Control.Exception
 import System.IO.Unsafe
 import System.Timeout
--- import Text.Printf
 -- import System.CPUTime
 
 
@@ -121,6 +120,14 @@ tabRow xs ss = "│ " ++ intercalate " │ " [padToLength l s | (l,s) <- zip xs 
 
 pad :: Int -> [[String]] -> [[String]]
 pad i = map (\ss -> take i $ ss ++ repeat "")
+
+chunksOf :: Int -> [e] -> [[e]]
+chunksOf i ls = map (take i) (build (splitter ls)) where
+  splitter :: [e] -> ([e] -> a -> a) -> a -> a
+  splitter [] _ n = n
+  splitter l c n  = l `c` splitter (drop i l) c n
+  build :: ((a -> [a] -> [a]) -> [a] -> [a]) -> [a]
+  build g = g (:) []
 
 squarize :: [a] -> [[a]]
 squarize ls = chunksOf (i 15) ls
