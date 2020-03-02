@@ -244,9 +244,9 @@ testerEval (TestEval inp1 out) = analyse $ eval inp1
 
 testerSearch :: Function -> TestSearch -> Result
 testerSearch f testObj = analyse . prettify $ case f of
-    BFS -> breadthFirstSearch graph end next [[start]] []
-    DFS -> depthLimitedSearch graph end next [[start]] depthLimit []
-    ASS -> aStarSearch graph end next getHr heuristicTable cost [[start]] []
+    BFS -> breadthFirstSearch graph end next [start] []
+    DFS -> depthLimitedSearch graph end next [start] depthLimit []
+    ASS -> aStarSearch graph end next getHr heuristicTable cost [start] []
     _ -> inputError
   where
     prettify :: Maybe Branch -> Maybe Branch
@@ -254,7 +254,7 @@ testerSearch f testObj = analyse . prettify $ case f of
     analyse :: Maybe Branch -> Result
     analyse = getResult f (description testObj) solution
     graph = concat . adjMtx . graphObj $ testObj
-    start = startNode testObj
+    start = reverse $ startBranch testObj
     end = endNode testObj
     solution = wrapSolution . getSolution $ testObj
     getSolution = case f of
