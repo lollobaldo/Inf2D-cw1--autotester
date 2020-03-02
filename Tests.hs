@@ -81,12 +81,20 @@ simpleLoop = GraphObj "Simpe graph with a loop"
   [0, 0, 0]]
   [1, 1, 1]
 
-complexLoop = GraphObj "Simple graph with loops"
+complexLoop0 = GraphObj "Simple graph with loops"
  [[0, 1, 1, 0],
   [0, 1, 0, 0],
   [0, 0, 1, 1],
   [0, 0, 0, 0]]
   [1, 1, 1, 1]
+
+complexLoop1 = GraphObj "Simple graph with loops"
+ [[0, 1, 0, 0],
+  [0, 0, 1, 0],
+  [1, 0, 0, 1],
+  [0, 0, 0, 0]]
+  [1, 1, 1, 1]
+
 
 biparte = GraphObj "Simple tree (small depth)"
  [[0, 1, 0, 1, 0],
@@ -142,7 +150,8 @@ testSimpleLoop = TestSearch "Search on simple graph with a loop" simpleLoop [0] 
 testSimpleImp = TestSearch "Impossible search" simpleLoop [0] 3 5 [] [] []
 testComplexDepth0 = TestSearch "Search on graph (small depth)" biparte [0] 4 2 [0,3,4] [0,3,4] [0,3,4]
 testComplexDepth1 = TestSearch "Search on graph (high depth)" biparte [0] 4 4 [0,3,4] [0,1,2,4] [0,3,4]
-testComplexLoop = TestSearch "Search on graph with loops" complexLoop [0] 3 10 [0,2,3] [0,2,3] [0,2,3]
+testcomplexLoop0 = TestSearch "Search on graph with loops" complexLoop0 [0] 3 10 [0,2,3] [0,2,3] [0,2,3]
+testcomplexLoop1 = TestSearch "Search on graph with loops" complexLoop1 [0] 3 10 [0,1,2,3] [0,1,2,3] [0,1,2,3]
 -- testBranching = TestSearch "Search on tree" simpleGraph [0] 7 5 [0,2,4] [0,1,3,4] [0,2,4]
 testBranching = TestSearch "Search on tree" simpleGraph [0] 4 5 [0,2,4] [0,1,3,4] [0,2,4]
 testGraphBig = TestSearch "Impossible search on big graph" bigGraph [0] 5 50 [] [] []
@@ -300,7 +309,8 @@ testsListSearch =
   , testSimpleImp
   , testComplexDepth0
   , testComplexDepth1
-  , testComplexLoop
+  , testcomplexLoop0
+  , testcomplexLoop1
   , testSimpleImp
   , testBranching
   , testGraphBig
