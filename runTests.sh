@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 GREEN=`echo -e "\033[92m"`
 DARK_GREEN=`echo -e "\033[1;32m"`
