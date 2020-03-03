@@ -50,8 +50,10 @@ instance Show Result where
   show (TestError _ _ _ _ "TIMEOUT") = "∞"
   show (TestError _ _ _ _ "UNDEFINED") = "?"
   show (TestError _ _ _ _ "ERROR") = "е"
-  show Passed = if os == "mingw32" then "√" else "✔"
-  show _ = if os == "mingw32" then "Х" else "✗"
+  show Passed = "√"
+  show _ = "Х"
+  -- show Passed = if os == "mingw32" then "√" else "✔"
+  -- show _ = if os == "mingw32" then "Х" else "✗"
 
 
 data Function =
