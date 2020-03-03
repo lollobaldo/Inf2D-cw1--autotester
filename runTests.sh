@@ -19,7 +19,7 @@ remove_e="s/-е //g;"
 
 git pull
 
-if [ $* == *--windows* ]
+if [ "$*" == "*--windows*" ]
 then
   # echo "working"
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
@@ -30,7 +30,7 @@ then
       $test_error"
 fi
 
-if [ $* != *--windows* ]
+if [ "$*" != "*--windows*" ]
 then
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$remove_e\
