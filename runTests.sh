@@ -22,12 +22,12 @@ git pull
 chmod +x ./runTests.sh
 
 exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
-    sed "$remove_e\
-      $test_passed\
-      $test_failed\
-      $test_timeout\
-      $test_undefined\
-      $remove_e"
+    sed "$remove_e" \
+      -e "$test_passed" \
+      -e "$test_failed" \
+      -e "$test_timeout" \
+      -e "$test_undefined" \
+      -e "$remove_e"
 
 # if [ "$*" == "*--windows*" ]
 # then
