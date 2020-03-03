@@ -348,3 +348,9 @@ main = do
   when meme $ if null totErrors
     then putStrLn lambda
     else putStrLn wrong
+  
+  putStrLn ""
+  putStrLn "If you like my beautiful autotester please star the repo at"
+  let emjs = if os == "mingw32" then "♥✶" else "❤️ ⭐"
+  let sjme = if os == "mingw32" then "✶♥" else "⭐❤️"
+  putStrLn $ emjs ++ "️  https://github.com/lollobaldo/Inf2D-cw1--autotester/stargazers " ++ sjme

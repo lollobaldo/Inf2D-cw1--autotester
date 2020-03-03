@@ -14,6 +14,8 @@ test_failed="s/✗\|Х/${RED}&${RESET}/g;"
 test_timeout="s/∞/${YELLOW}&${RESET}/g;"
 test_undefined="s/?/${YELLOW}&${RESET}/g;"
 test_error="s/е/${RED}&${RESET}/g;"
+heart="s/♥/${RED}&${RESET}/g;"
+star="s/✶/${YELLOW}&${RESET}/g;"
 
 remove_e="s/-е //g;"
 
