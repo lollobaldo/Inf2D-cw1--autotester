@@ -54,7 +54,9 @@ then
       $test_failed\
       $test_timeout\
       $test_undefined\
-      $test_error"
+      $test_error\
+      $heart\
+      $star"
 fi
 
 if [ "$*" != "--windows" ]
