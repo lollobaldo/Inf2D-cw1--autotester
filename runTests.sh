@@ -61,7 +61,7 @@ fi
 
 if [ "$*" != "--windows" ]
 then
-  echo linux
+  # echo linux
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$l_test_passed\
       $l_test_failed\
