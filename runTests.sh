@@ -21,26 +21,34 @@ git stash
 git pull
 chmod +x ./runTests.sh
 
-if [ "$*" == "*--windows*" ]
-then
-  # echo "working"
-  exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
-    sed "$test_passed\
-      $test_failed\
-      $test_timeout\
-      $test_undefined\
-      $test_error"
-fi
-
-if [ "$*" != "*--windows*" ]
-then
-  echo linux
-  exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
+exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$remove_e\
       $test_passed\
       $test_failed\
       $test_timeout\
       $test_undefined\
-      $test_error\
       $remove_e"
-fi
+
+# if [ "$*" == "*--windows*" ]
+# then
+#   # echo "working"
+#   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
+#     sed "$test_passed\
+#       $test_failed\
+#       $test_timeout\
+#       $test_undefined\
+#       $test_error"
+# fi
+
+# if [ "$*" != "*--windows*" ]
+# then
+#   echo linux
+#   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
+#     sed "$remove_e\
+#       $test_passed\
+#       $test_failed\
+#       $test_timeout\
+#       $test_undefined\
+#       $test_error\
+#       $remove_e"
+# fi
