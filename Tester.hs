@@ -24,6 +24,7 @@ import System.Info
 -- import Data.List.Split
 import System.Environment
 import Control.Exception
+import Unsafe.Coerce
 import System.IO.Unsafe
 import System.Timeout
 -- import System.CPUTime
@@ -187,16 +188,25 @@ getResult f s i expected output = unsafePerformIO result
     handleError :: IO Result -> IO Result
     handleError =
       flip catches
-        [Handler (\(_ :: ErrorCall) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
+        [Handler (\(_ :: TypeError) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
+        -- [Handler (\(_ :: ErrorCall) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
     execute :: IO (Maybe Result)
     execute = do
       args <- getArgs
       let noTimeout = "--no-timeout" `elem` args
       let timer = if noTimeout then -1 else 5000000
-      timeout timer . handleError . evaluate . analyse $ (output == expected)
+      case f of
+        ASS -> timeout timer . handleError . evaluate . analyse $ compareCosts (unsafeCoerce output) (unsafeCoerce expected)
+        _ -> timeout timer . handleError . evaluate . analyse $ (output == expected)
     result = do
       let timeoutError = TestError f s i (show expected) "TIMEOUT"
       fromMaybe timeoutError <$> execute
+    compareCosts :: Maybe Branch -> Maybe Branch -> Bool
+    compareCosts b1 b2 = evalBCost b1 == evalBCost b2
+    evalBCost :: Maybe Branch -> Int
+    evalBCost b = maybe 0 (cost graph) b
+    graph :: [Int]
+    graph = read $ drop 7 $ i !! 3
 
 testerNext :: TestNext -> Result
 testerNext (TestNext branch graph out) = analyse . prettify $ next inp1 inp2
