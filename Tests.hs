@@ -11,6 +11,9 @@ data GraphObj = GraphObj {
   hrTable :: ![Int]
 }
 
+instance Show GraphObj where
+  show (GraphObj _ mtx _) = show mtx
+
 data TestSearch = TestSearch {
   description :: !String,
   graphObj :: !GraphObj,
@@ -213,8 +216,15 @@ testAlphaBetaDraw1 = TestAlphaBeta "Normal game (draw) (2 moves left)"
 testNextEmpty = TestNext [] emptyGraph []
 testNextSimple0 = TestNext [0] simple [[0,1]]
 testNextSimple1 = TestNext [0,1] simple [[0,1,2]]
+-- testNextSimple1 = TestNext [0,1] simple [[1,2]]
 testNextGraph0 = TestNext [0] simpleGraph [[0,1],[0,2]]
 testNextGraph1 = TestNext [0,1] simpleGraph [[0,1,3]]
+
+-- testCheckArrivalTrue0 = TestCheckArrival 0 0 False
+-- testCheckArrivalTrue1 = TestCheckArrival 1 1 False
+-- testCheckArrivalFalse0 = TestCheckArrival 0 1 True
+-- testCheckArrivalFalse1 = TestCheckArrival 1 2 True
+-- testCheckArrivalFalse2 = TestCheckArrival 1 0 True
 
 testCheckArrivalTrue0 = TestCheckArrival 0 0 True
 testCheckArrivalTrue1 = TestCheckArrival 1 1 True
@@ -225,6 +235,7 @@ testCheckArrivalFalse2 = TestCheckArrival 1 0 False
 testExploredTrue = TestExplored 0 [1, 0, 3] True
 testExploredFalse = TestExplored 0 [1, 2, 3] False
 testExploredEmpty = TestExplored 0 [] False
+-- testExploredHugeTrueH = TestExplored 0 [0..10000] False
 testExploredHugeTrueH = TestExplored 0 [0..10000] True
 testExploredHugeTrueT = TestExplored 0 [10000,9999..0] True
 testExploredHugeFalse = TestExplored 0 [1..10000] False

@@ -64,7 +64,7 @@ header = ["module Autotests where", "import Tests"]
 
 exports :: String
 exports = "testsListAuto=[" ++
-  intercalate "," ["testAuto"++ show i ++ "size" ++ show n | n <- [10, 20, 30, 50], i <- [0..9]]
+  intercalate "," ["testAuto"++ show i ++ "size" ++ show n | n <- [10, 15, 20, 25, 30, 50], i <- [0..9]]
   ++ "]"
 
 getFile :: String
