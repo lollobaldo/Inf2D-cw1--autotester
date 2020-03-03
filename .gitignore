@@ -2,4 +2,5 @@
 *.hi
 dist-newstile/
 try.hs
-# Generator.hs
+Generator.hs
+Autotests.10.hs
