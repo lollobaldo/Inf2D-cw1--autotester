@@ -34,6 +34,7 @@ fi
 
 if [ "$*" != "*--windows*" ]
 then
+  echo linux
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$remove_e\
       $test_passed\
