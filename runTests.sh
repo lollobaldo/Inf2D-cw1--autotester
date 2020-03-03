@@ -18,6 +18,7 @@ test_error="s/е/${RED}&${RESET}/g;"
 remove_e="s/-е //g;"
 
 git pull
+chmod +x ./runTests.sh
 
 if [ "$*" == "*--windows*" ]
 then
