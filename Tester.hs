@@ -1,16 +1,16 @@
 -- {-# OPTIONS -Weverything #-}
 -- {-# OPTIONS -W-no-unsafe #-}
 {-# OPTIONS -Wall #-}
-{-# OPTIONS -Wincomplete-uni-patterns #-}
-{-# OPTIONS -Wincomplete-record-updates #-}
-{-# OPTIONS -Wcompat #-}
-{-# OPTIONS -Widentities #-}
-{-# OPTIONS -Wredundant-constraints #-}
-{-# OPTIONS -Wmissing-export-lists #-}
-{-# OPTIONS -Wpartial-fields #-}
-{-# OPTIONS -funbox-strict-fields #-}
-{-# OPTIONS -fhide-source-paths #-}
-{-# OPTIONS -freverse-errors #-}
+-- {-# OPTIONS -Wincomplete-uni-patterns #-}
+-- {-# OPTIONS -Wincomplete-record-updates #-}
+-- {-# OPTIONS -Wcompat #-}
+-- {-# OPTIONS -Widentities #-}
+-- {-# OPTIONS -Wredundant-constraints #-}
+-- {-# OPTIONS -Wmissing-export-lists #-}
+-- {-# OPTIONS -Wpartial-fields #-}
+-- {-# OPTIONS -funbox-strict-fields #-}
+-- {-# OPTIONS -fhide-source-paths #-}
+-- {-# OPTIONS -freverse-errors #-}
 
 
 {-# LANGUAGE ScopedTypeVariables #-}
