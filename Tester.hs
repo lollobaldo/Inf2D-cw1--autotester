@@ -149,6 +149,32 @@ tabularise a = unlines . ([topRow xs] ++) . (++ [botRow xs]) . intersperse (midR
     padded = pad mx a
     xs = map maximum . transpose . map (map length) $ a
 
+justify :: Int -> String -> String
+justify n s = sps ++ s ++ sps ++ replicate (lp `mod` 2) ' '
+  where
+    lp = n - length s
+    n2 = lp `div` 2
+    sps = replicate n2 ' '
+
+boxIt :: [String] -> String
+boxIt ss = unlines $ [topRow [mx]]
+        ++ map makeMid ss
+        ++ [botRow [mx]]
+  where
+    mx = maximum . map safeLen $ ss
+    safeLen s = showOff $ length s - if '\10084' `elem` s then 2 else 0
+    makeMid :: String -> String
+    makeMid = ("│ " ++ ) . ( ++ " │"). justify mx
+    -- padded = pad mx ss
+    -- xs = map maximum . transpose . map (map length) $ a
+
+boxItWA :: [String] -> String
+boxItWA [s1,s2] = unlines $ map ("  " ++) [topRow [mx], makeMid1, makeMid2, botRow [mx]]
+  where
+    mx = length s2 - 1
+    makeMid1, makeMid2 :: String
+    makeMid1 = "│ " ++ justify mx s1 ++ " │"
+    makeMid2 = "│ " ++ s2 ++ " │"
 
 wrapSolution :: Branch -> Maybe Branch
 wrapSolution [] = Nothing
@@ -366,7 +392,12 @@ main = do
     else putStrLn wrong
 
   putStrLn ""
-  putStrLn "If you like my beautiful autotester please star the repo at"
   let emjs = if os == "mingw32" then "♥✶" else "❤️ ⭐"
-  let sjme = if os == "mingw32" then "✶♥" else "⭐❤️"
-  putStrLn $ emjs ++ "️ https://github.com/lollobaldo/Inf2D-cw1--autotester/stargazers " ++ sjme
+  let sjme = if os == "mingw32" then "✶♥" else "⭐❤️ "
+  let starMsg =
+        [
+          "If you like my beautiful autotester please star the repo at"
+        , emjs ++ "️ https://github.com/lollobaldo/Inf2D-cw1--autotester/stargazers " ++ sjme
+        ]
+  putStrLn . boxItWA $ starMsg
+  putStrLn ""
