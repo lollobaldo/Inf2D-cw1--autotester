@@ -42,17 +42,7 @@ chmod +x ./runTests.sh
 source /etc/profile.d/modules.sh > /dev/null 2>&1 || true
 module add ghc > /dev/null 2>&1 || true
 
-# exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
-#     sed "$remove_e" \
-#       -e "$test_passed" \
-#       -e "$test_failed" \
-#       -e "$test_timeout" \
-#       -e "$test_undefined" \
-#       -e "$remove_e"
-
-# dir = $(pwd)
-
-if [ "$*" == "--windows" ] || [ "$(pwd)" == *"/afs/inf.ed.ac.uk"* ]
+if [ "$*" == "--windows" ] || [[ "$HOME" == *"/afs/inf.ed.ac.uk"* ]]
 then
   # echo "windows"
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
@@ -65,7 +55,7 @@ then
       $star"
 fi
 
-if [ "$*" != "--windows" ]
+if [ "$*" != "--windows" ] && [[ "$HOME" != *"/afs/inf.ed.ac.uk"* ]]
 then
   # echo linux
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
