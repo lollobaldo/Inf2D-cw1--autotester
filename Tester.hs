@@ -204,7 +204,7 @@ getResult f s i expected output = unsafePerformIO result
     compareCosts :: Maybe Branch -> Maybe Branch -> Bool
     compareCosts b1 b2 = evalBCost b1 == evalBCost b2
     evalBCost :: Maybe Branch -> Int
-    evalBCost b = maybe 0 (cost graph) b
+    evalBCost b = maybe 0 (cost graph . reverse) b
     graph :: [Int]
     graph = read $ drop 7 $ i !! 3
 
