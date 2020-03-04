@@ -38,8 +38,8 @@ git stash
 git pull
 chmod +x ./runTests.sh
 
-source /etc/profile.d/module.sh > /dev/null 2>&1
-module add ghc > /dev/null 2>&1
+# source /etc/profile.d/module.sh > /dev/null 2>&1
+# module add ghc > /dev/null 2>&1
 
 # exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
 #     sed "$remove_e" \
