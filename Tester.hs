@@ -188,7 +188,7 @@ getResult f s i expected output = unsafePerformIO result
     handleError :: IO Result -> IO Result
     handleError =
       flip catches
-        [Handler (\(_ :: TypeError) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
+        [Handler (\(_ :: ErrorCall) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
         -- [Handler (\(_ :: ErrorCall) -> return $ TestError f s i (show expected) "UNDEFINED")]--,
     execute :: IO (Maybe Result)
     execute = do
