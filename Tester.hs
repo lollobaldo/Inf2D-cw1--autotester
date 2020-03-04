@@ -175,6 +175,7 @@ boxItWA [s1,s2] = unlines $ map ("  " ++) [topRow [mx], makeMid1, makeMid2, botR
     makeMid1, makeMid2 :: String
     makeMid1 = "│ " ++ justify mx s1 ++ " │"
     makeMid2 = "│ " ++ s2 ++ " │"
+boxItWA _ = error "This shouldn't happen"
 
 wrapSolution :: Branch -> Maybe Branch
 wrapSolution [] = Nothing
