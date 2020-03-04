@@ -21,6 +21,7 @@ Just `cd` into the repository and run the `runTests` command (remember to give e
 
 ### Linux/DICE
 On DICE, `ghc` must be in your PATH, run `module add ghc` if you get an error like `command not found: runhaskell`
+Also, if you see some scrambled letters instead of a nice table, run with the `--windows` flag: `./runTests --windows`.
 ```bash
 module add ghc
 cd Inf2D-cw1--autotester
