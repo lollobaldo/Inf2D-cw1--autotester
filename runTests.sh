@@ -34,12 +34,12 @@ l_test_error="s/е/${L_RED}&${L_RESET}/g;"
 
 # remove_e="s/-е //g;"
 
-git stash
-git pull
+# git stash
+# git pull
 chmod +x ./runTests.sh
 
-# source /etc/profile.d/module.sh > /dev/null 2>&1
-# module add ghc > /dev/null 2>&1
+source /etc/profile.d/modules.sh > /dev/null 2>&1
+module add ghc > /dev/null 2>&1
 
 # exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
 #     sed "$remove_e" \
@@ -49,7 +49,9 @@ chmod +x ./runTests.sh
 #       -e "$test_undefined" \
 #       -e "$remove_e"
 
-if [ "$*" == "--windows" ]
+# dir = $(pwd)
+
+if [ "$*" == "--windows" ] || [ "$(pwd)" == *"/afs/inf.ed.ac.uk"* ]
 then
   # echo "working"
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
@@ -64,7 +66,7 @@ fi
 
 if [ "$*" != "--windows" ]
 then
-  # echo linux
+  echo linux
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$l_test_passed\
       $l_test_failed\
