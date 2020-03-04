@@ -238,7 +238,7 @@ testerCost (TestCost graph branch out) = analyse $ cost inp1 inp2
   where
     inp1 = concat . adjMtx $ graph
     inp2 = reverse branch
-    inps = ["Graph: "++show graph, "Branch: "++prettyPrintBranch inp1]
+    inps = ["Graph: "++show graph, "Branch: "++prettyPrintBranch branch]
     analyse :: Int -> Result
     analyse = getResult Cost "testCost" inps out
 
