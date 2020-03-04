@@ -344,24 +344,27 @@ main = do
   mainTestFuncs
   mainTestSearches
 
-  let errors = [descriptivePrintResult e | e@TestError{} <- concat (runTestsFunctions ++ runTestsSearches)]
+  let runnedTests = concat (runTestsFunctions ++ runTestsSearches)
+  let errors = [descriptivePrintResult e | e@TestError{} <- runnedTests]
+  let errorsExcluding = [descriptivePrintResult e | e@TestError{} <- runnedTests, _actualOutput e /= "UNDEFINED"]
   let autoErrors = [descriptivePrintResult e | e@TestError{} <- runTestsAuto]
   when (null errors) mainTestAuto
 
-  let totErrors = case errors of
-        [] -> autoErrors
-        _  -> errors
+  let totErrors = if null errors then autoErrors else errors
+  let showErrors = if null errors
+        then autoErrors
+        else (if null errorsExcluding then ["Some undefined stuff"] else errorsExcluding)
   let passTest = "All tests passed"
-  let summary = case totErrors of
-        [] -> passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""
-        _ -> "Failed " ++ show (length totErrors) ++ " tests. Here are the first 5 errors.\n" ++inclusiveIntercalate ("\n" ++ replicate 50 '─' ++ "\n") (take showNErrors totErrors)
+  let summary = if null totErrors
+       then passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""
+       else "Failed " ++ show (length totErrors) ++ " tests. Here are the first 5 errors (excluding undefined).\n" ++inclusiveIntercalate ("\n" ++ replicate 50 '─' ++ "\n") (take showNErrors showErrors)
   putStrLn summary
   lambda <- readFile $ if os == "mingw32" then "lambda.txt" else "lambdaC.txt"
   wrong <- readFile "wrong.txt"
-  when meme $ if null totErrors
+  when meme $ if null (errors ++ totErrors)
     then putStrLn lambda
     else putStrLn wrong
-  
+
   putStrLn ""
   putStrLn "If you like my beautiful autotester please star the repo at"
   let emjs = if os == "mingw32" then "♥✶" else "❤️ ⭐"
