@@ -231,7 +231,7 @@ getResult f s i expected output = unsafePerformIO result
     compareCosts :: Maybe Branch -> Maybe Branch -> Bool
     compareCosts b1 b2 = evalBCost b1 == evalBCost b2
     evalBCost :: Maybe Branch -> Int
-    evalBCost b = maybe 0 (cost graph . reverse) b
+    evalBCost = maybe 0 (cost graph . reverse)
     graph :: [Int]
     graph = read $ drop 7 $ i !! 3
 
@@ -378,9 +378,10 @@ main = do
   when (null errors) mainTestAuto
 
   let totErrors = if null errors then autoErrors else errors
-  let showErrors = if null errors
-        then autoErrors
-        else (if null errorsExcluding then ["Some undefined stuff"] else errorsExcluding)
+  let showErrors
+        | null errors = autoErrors
+        | null errorsExcluding = ["Some undefined stuff"]
+        | otherwise = errorsExcluding
   let passTest = "All tests passed"
   let summary = if null totErrors
        then passTest ++ if meme then ", enjoy a LambdaMan to cheer up." else ""
