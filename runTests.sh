@@ -34,8 +34,8 @@ l_test_error="s/е/${L_RED}&${L_RESET}/g;"
 
 # remove_e="s/-е //g;"
 
-# git stash
-# git pull
+git stash
+git pull
 chmod +x ./runTests.sh
 
 source /etc/profile.d/modules.sh > /dev/null 2>&1
