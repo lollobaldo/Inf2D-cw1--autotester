@@ -242,6 +242,7 @@ testExploredHugeFalse = TestExplored 0 [1..10000] False
 
 testCostEmpty = TestCost emptyGraph [] 0
 testCostSimple0 = TestCost simple [0,1] 1
+-- testCostSimple0 = TestCost simple [0,1] 0
 testCostSimple1 = TestCost simple [0,1,2] 2
 testCostGraph0 = TestCost hugeGraph [0,3,6] 5
 testCostGraph1 = TestCost hugeGraph [1,5,10,12] 5

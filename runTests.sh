@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 GREEN=`echo -e "\033[92m"`
 DARK_GREEN=`echo -e "\033[1;32m"`
@@ -38,8 +38,9 @@ git stash
 git pull
 chmod +x ./runTests.sh
 
-source /etc/profile.d/modules.sh > /dev/null 2>&1
-module add ghc > /dev/null 2>&1
+# echo ciao
+source /etc/profile.d/modules.sh > /dev/null 2>&1 || true
+module add ghc > /dev/null 2>&1 || true
 
 # exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
 #     sed "$remove_e" \
@@ -53,7 +54,7 @@ module add ghc > /dev/null 2>&1
 
 if [ "$*" == "--windows" ] || [ "$(pwd)" == *"/afs/inf.ed.ac.uk"* ]
 then
-  # echo "working"
+  # echo "windows"
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$test_passed\
       $test_failed\
@@ -66,7 +67,7 @@ fi
 
 if [ "$*" != "--windows" ]
 then
-  echo linux
+  # echo linux
   exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
     sed "$l_test_passed\
       $l_test_failed\
