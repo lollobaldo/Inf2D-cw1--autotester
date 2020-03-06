@@ -36,7 +36,9 @@ import Tests
 import Autotests
 -- import ConnectFourWithTwist
 
-import Inf2d1 hiding (main)
+import Inf2d1 (
+  Branch, next, checkArrival, explored, cost, getHr, eval,
+  breadthFirstSearch, depthLimitedSearch, aStarSearch, alphabeta)
 
 
 data Result = Passed | TestError {
