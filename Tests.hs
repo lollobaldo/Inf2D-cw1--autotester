@@ -325,7 +325,6 @@ testsListSearch =
   , testComplexDepth1
   , testcomplexLoop0
   , testcomplexLoop1
-  , testSimpleImp
   , testBranching
   , testGraphBig
   , testGraphStd
