@@ -41,7 +41,7 @@ chmod +x runTests.sh
 ```
 
 ### Common errors:
-- `runhaskell: not found`: it means `ghc` is not in your path, run `module add ghc` and try again;
+- `runghc: not found`: it means `ghc` is not in your path, run `module add ghc` and try again;
 - `module: command not found`: run `source /etc/profile.d/modules.sh` and try again
 - If you see some scrambled letters instead of a nice table, run with the `--windows` flag: `./runTests --windows`.
 
