@@ -45,7 +45,7 @@ module add ghc > /dev/null 2>&1 || true
 if [ "$*" == "--windows" ] || [[ "$HOME" == *"/afs/inf.ed.ac.uk"* ]]
 then
   # echo "windows"
-  exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
+  exec runghc -i../:./ Tester.hs $(whoami) $* |\
     sed "$test_passed\
       $test_failed\
       $test_timeout\
@@ -58,7 +58,7 @@ fi
 if [ "$*" != "--windows" ] && [[ "$HOME" != *"/afs/inf.ed.ac.uk"* ]]
 then
   # echo linux
-  exec runhaskell -i../:./ Tester.hs $(whoami) $* |\
+  exec runghc -i../:./ Tester.hs $(whoami) $* |\
     sed "$l_test_passed\
       $l_test_failed\
       $l_test_timeout\
